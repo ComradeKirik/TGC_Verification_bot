@@ -13,11 +13,10 @@ router = Router()
 @router.callback_query()
 async def application_cons(callback: types.CallbackQuery, bot: Bot):
     if callback.data.startswith("accept_") or callback.data.startswith("reject_"):
-        print("Ошибка предотвращена")
         await handle_decision(callback, bot)
         return None
 
-    username = callback.data
+    username = callback.from_user.username
     print(username)
     builder = InlineKeyboardBuilder()
 
@@ -34,7 +33,7 @@ async def application_cons(callback: types.CallbackQuery, bot: Bot):
     try:
         await bot.send_message(
             chat_id=CHANNEL_MASTER.lstrip('@'),
-            text=f"Пользователь @{list(username.split(':'))[1]} хочет вступить в телеграм-канал!",
+            text=f"Пользователь @{username} хочет вступить в телеграм-канал!",
             reply_markup=builder.as_markup()
         )
     except ValueError:
@@ -47,13 +46,12 @@ async def create_invite_link(bot: Bot):
 
 @router.callback_query(lambda c: c.data.startswith("accept_") or c.data.startswith("reject_"))
 async def handle_decision(callback: types.CallbackQuery, bot: Bot):
+    await callback.message.delete()
     action, user_id = callback.data.split("_")
     user_id = int(user_id)
     if action == "accept":
         try:
-            print(1)
             link = await create_invite_link(bot)
-            print(2)
             await bot.send_message(
                 chat_id=user_id,
                 text=f"Ваша заявка на вступление в чат была одобрена! Одноразовая ссылка-приглашение: {link}"
