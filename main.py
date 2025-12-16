@@ -1,16 +1,24 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import os
+import asyncio
+from dotenv import load_dotenv
+from aiogram import Bot, Dispatcher
+from handlers import start_handler, apply_handler
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+load_dotenv()
+BOT_TOKEN = os.getenv('TOKEN')
+if not BOT_TOKEN:
+    raise ValueError("BOT_TOKEN не найден в переменных окружения")
+bot = Bot(token=BOT_TOKEN)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+dp = Dispatcher()
+
+dp.include_router(start_handler.router)
+dp.include_router(apply_handler.router)
+
+async def main():
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
