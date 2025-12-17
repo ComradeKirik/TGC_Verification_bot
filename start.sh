@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+
 if command -v python3 &> /dev/null; then
     echo "Python 3 уже установлен."
     python3 --version
