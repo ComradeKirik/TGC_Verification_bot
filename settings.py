@@ -11,8 +11,18 @@ except FileNotFoundError:
     print("Файл отсутствует. Начинается настройка")
     with open(".env", "w+") as file:
         print("Введите токен своего бота, который вам прислал @BotFather при создании вашего бота.")
-        file.write(f"TOKEN={input("Токен бота: ")}")
+        a = input("Токен бота: ")
+        file.write(f"TOKEN={a}\n")
         print("Введите свой айди. Его можно узнать в @TheGetAnyID_bot")
-        file.write(f"BOT_MASTER={input("Айди владельца канала: ")}")
-        print("Введите айди телеграм-канала. Для этого перешлите пост оттуда в @TheGetAnyID_bot")
-        file.write(f"CHANNEL_ID={input("Айди ТГК(начинается с -100): ")}")
+        a = input("Айди владельца канала: ")
+        file.write(f"BOT_MASTER={a}\n")
+        while True:
+            print("Введите айди телеграм-канала. Для этого перешлите пост оттуда в @TheGetAnyID_bot")
+            a = input("Айди ТГК(начинается с -100): ")
+            if a.startswith("-100"):
+                file.write(f"CHANNEL_ID={a}")
+                break
+            else:
+                print("Айди должно начинаться с -100!")
+
+print("Настройка завершена!\n теперь можете запускать main.py!")
