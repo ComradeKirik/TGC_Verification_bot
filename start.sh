@@ -49,3 +49,6 @@ else
         echo "Установка aiogram отменена."
     fi
 fi
+
+echo "Запуск программы настройки"
+python3 settings.py
